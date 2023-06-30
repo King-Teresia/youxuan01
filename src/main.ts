@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import './style.css'
 //@ts-ignore
 import App from './App.vue'
 
@@ -21,6 +20,29 @@ import globalComponet from "@/components"
 app.use(globalComponet)//只要我们 app.use咱们自定义的插件 就会触发 插件里的那个 install()
 console.log(app);
 
+// 引入全局样式
+import "@/styles/index.scss"
+
+// 引入axios
+import axios from "axios"
+// axios({
+//     url: "/api/user/login",
+//     method: "post",
+//     data: {
+//         username: "admin",
+//         password: "123"
+//     }
+// })
+axios.post('/api/user/login', { username: "admin", password: "123" })
+    .then(res => console.log(res))
+    .catch(res => {
+        console.log("出错了");
+    })
+
+// axios.get('/api/login').then(res => console.log(res, "okokok")).catch(res => {
+//     console.log(res);
+//     console.log("出错了");
+// })
 
 app.use(ElementPlus, {
     locale: zhCn,

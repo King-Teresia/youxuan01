@@ -31,6 +31,8 @@
   <nani></nani>
   <h3>我要使用icon了</h3>
   <svgIcon name="home" color="" width="50px" height="50px"></svgIcon>
+
+  <h3>我要测试,测试什么呢?测一下全局样式管用不(确实管用)</h3>
 </template>
 
 <script setup lang="ts">
@@ -42,3 +44,10 @@ import {
   Star,
 } from '@element-plus/icons-vue'
 </script>
+
+
+<style scoped lang="scss">
+h3 {
+  color: $color
+}
+</style>
