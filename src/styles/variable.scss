@@ -1,3 +1,18 @@
 // 在这里配置scss的全局(格式是 $属性名 )
 // 有用的小知识又增加了: scss用$  less 用 @
-$color : orange
+
+
+// 左侧边栏
+$base-menu-width: 260px;
+$base-menu-background: #00152b;
+
+// 左侧边栏里的logo
+$base-menu-logo-height: 50px;
+
+// 左侧边栏里的logo旁边的 文字大小
+$base-logo-title-font-size: 26px;
+$base-menu-min-width: 50px;
+
+
+// header
+$base-tabber-height: 50px;

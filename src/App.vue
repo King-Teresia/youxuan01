@@ -1,53 +1,24 @@
 <template>
-  <h3>来</h3>
-  <el-card class="box-card">
-    <template #header>
-      <div class="card-header">
-        <span>Card name</span>
-        <el-button class="button" text>Operation button</el-button>
-      </div>
-    </template>
-    <div v-for="o in 4" :key="o" class="text item">{{ 'List item ' + o }}</div>
-  </el-card>
-
-  <el-button type="primary" plain>Primary</el-button>
-  <el-button type="success" plain>Success</el-button>
-  <el-button type="info" plain>Info</el-button>
-  <el-button type="warning" plain>Warning</el-button>
-  <el-button type="danger" plain>Danger</el-button>
-
-  <el-button type="success" :icon="Check" circle />
-  <el-button type="info" :icon="Message" circle />
-  <el-button type="warning" :icon="Star" circle />
-  <el-button type="danger" :icon="Delete" circle />
-
-  <hr class="my-4" />
-  <!-- <div class="demo-pagination-block">
-    <div class="demonstration">All combined</div>
-    <el-pagination :page-sizes="[100, 200, 300, 400]" layout="total, sizes, prev, pager, next, jumper" :total="400" />
-  </div> -->
-  <pagenation></pagenation>
-  <svgIcon name="loading"></svgIcon>
-  <nani></nani>
-  <h3>我要使用icon了</h3>
-  <svgIcon name="home" color="" width="50px" height="50px"></svgIcon>
-
-  <h3>我要测试,测试什么呢?测一下全局样式管用不(确实管用)</h3>
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-import nani from "@/components/nani.vue"
-import {
-  Check,
-  Delete,
-  Message,
-  Star,
-} from '@element-plus/icons-vue'
+// import axiosRequest from "@/utils/axiosRequest"
+import { onMounted } from "vue";
+import { reqLogin } from "./views/user"
+onMounted(() => {
+  // axiosRequest({
+  //   url: "/user/login",//为什么不加/api因为我们封装的axios在发请求的时候 会自动添加上(baseURL) 我们设置的字段(在这里是那个环境变量的api) 
+  //   method: "get"
+  // }).then(res => console.log(res))
+
+  // 上面这么写太麻烦了
+  // axiosRequest.get("/user/login").then(res => console.log(res))
+  // axiosRequest.post("/user/login", { username: "admin", password: "123" }).then(res => console.log(res))
+  reqLogin({ username: "admin", password: "1234567" })
+
+})
 </script>
 
 
-<style scoped lang="scss">
-h3 {
-  color: $color
-}
-</style>
+<style scoped lang="scss"></style>
