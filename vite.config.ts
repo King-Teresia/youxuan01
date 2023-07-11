@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 // element-plus自动按需导入
 import AutoImport from 'unplugin-auto-import/vite'
@@ -14,7 +14,10 @@ import { viteMockServe } from 'vite-plugin-mock'
 
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }: ConfigEnv) => {
+export default defineConfig(({ command, mode }: ConfigEnv) => {
+  // 获取各个环境下 对应的变量
+  let env = loadEnv(mode, process.cwd())
+
   return {
     plugins: [
       vue(),
@@ -50,18 +53,33 @@ export default defineConfig(({ command }: ConfigEnv) => {
       },
     },
 
-    // 跨域配置
+    // 跨域配置by 我自己
+    // server: {
+    //   proxy: {
+    //     '/api': {
+    //       //目标地址
+    //       target: 'http://localhost:3000',
+    //       changeOrigin: true,
+    //       rewrite: (path) => path.replace(/^\/api/, '')
+    //     }
+    //   }
+    // }
+
+
+    // 真实的接口by 尚硅谷 代理跨域
     server: {
       proxy: {
-        '/api': {
-          //目标地址
-          target: 'http://localhost:3000',
+        // 关键字api
+        [env.VITE_APP_BASE_API]: {
+          // 服务器地址
+          target: env.VITE_SERVE,
+          // 是否需要跨域
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
-        }
+          // 路径重写 这里的意思是 把路径中所有的 /api 重写为 空字符串
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
       }
     }
-
 
   }
 })

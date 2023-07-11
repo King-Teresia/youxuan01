@@ -21,18 +21,17 @@
         <div class="tabbar_right">
             <el-button size="small" icon="Refresh" circle @click="updateRefsh"></el-button>
             <el-button size="small" icon="FullScreen" circle @click="fullScreen"></el-button>
-            <img src="../../assets/images/Fes2018.png" alt="">
+            <img :src="useUser.avatar" alt="" style="border-radius: 30%;">
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    刀客他
+                    {{ useUser.username }}
                     <el-icon class="el-icon--right">
                         <arrow-down />
                     </el-icon>
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>Action 1</el-dropdown-item>
-                        <el-dropdown-item>Action 2</el-dropdown-item>
+                        <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -41,12 +40,15 @@
 </template>
 
 <script setup lang="ts">
+
 import { ArrowRight } from '@element-plus/icons-vue';
 import useLayOutSettingStore from '@/store/modules/layout.config';
-import { useRoute } from 'vue-router';
+import useUserStore from '@/store/modules/user';
+import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
+const router = useRouter()
 let useLayOutStore = useLayOutSettingStore();
-
+const useUser = useUserStore()
 const fullScreen = () => {
     //DOM对象的一个属性:可以用来判断当前是不是全屏模式[全屏的化 这个full的值是true,不是全屏会返回null 布尔值就是false] 详情见 OneNote的 随手放 有好多document的属性
     let full = document.fullscreenElement;
@@ -64,13 +66,21 @@ const updateRefsh = () => {
     useLayOutStore.refsh = !useLayOutStore.refsh;
 }
 
-
-
 // 定义展开栏图标 的变量
 const changeIcon = () => {
     useLayOutStore.fold = !useLayOutStore.fold
-
 }
+
+const logout = async () => {
+    // 退出登录的第一件事:向服务器发请求(告诉服务器我现在这个token 废了，下次有人再拿这个token找你 别让他通行 ; 下次我找你要个新的)
+    // 即 通知服务器 本次用户的 唯一标识失效
+    // 第二件事：清理pinia仓库中的用户数据 username啊 avatar啊之类的
+    // 第三件事：跳转到登陆界面
+    await useUser.userLogout()
+    router.push({ path: '/login', query: { redirect: route.path } })
+}
+
+
 </script>
 
 <script lang="ts">
@@ -78,6 +88,8 @@ export default {
     name: "Tabbar"
 }
 </script>
+
+
 <style scoped lang="scss">
 .tabbar {
     width: 100%;

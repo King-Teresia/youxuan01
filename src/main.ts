@@ -30,8 +30,12 @@ import pinia from "./store"
 
 // 解决ElNotification样式丢失问题 手动引入他的样式
 import "element-plus/theme-chalk/el-notification.css";
+// 解决Elmessage样式丢失问题 手动引入他的样式
+import "element-plus/theme-chalk/el-message.css";
 
 
+// 引入 路由鉴权
+import "./permission.ts";
 
 app.use(pinia)
 app.use(router)

@@ -3,7 +3,6 @@
 </template>
 
 <script setup lang="ts">
-console.log("im 404");
 
 
 </script>

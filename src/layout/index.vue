@@ -1,7 +1,7 @@
 <template>
     <div class="layout_container">
         <el-container>
-            <el-aside class="layout_slider" :class="{ amiyafold: useLayOutStore.fold ? true : false }">
+            <el-aside class="layout_slider">
                 <logo></logo>
                 <!-- scrollbar 来限制侧边栏菜单的展开最大高度 -->
                 <el-scrollbar>
@@ -18,7 +18,7 @@
                     <headerTabbar></headerTabbar>
                 </el-header>
                 <el-main class="layout_main" :class="{ amiyafold: useLayOutStore.fold ? true : false }">
-                    <p style="height:2000px">
+                    <p style="height:1200px">
                         <mainShow></mainShow>
                     </p>
                 </el-main>
@@ -36,9 +36,14 @@ import mainShow from "./main/index.vue"
 import headerTabbar from "./tabbar/index.vue"
 import { useRoute } from "vue-router"
 import useLayOutSettingStore from "@/store/modules/layout.config"
+import { onMounted } from "vue"
 let useLayOutStore = useLayOutSettingStore();
 const userStore = useUserStore()
 const route = useRoute()
+
+
+
+
 </script>
 
 
@@ -66,15 +71,15 @@ const route = useRoute()
             }
         }
 
-        &.amiyafold {
-            width: $base-menu-min-width;
+        // &.amiyafold {
+        //     width: $base-menu-min-width;
 
-            :deep(.logo) {
-                p {
-                    display: none;
-                }
-            }
-        }
+        //     :deep(.logo) {
+        //         p {
+        //             display: none;
+        //         }
+        //     }
+        // }影响字体变化 导致收起菜单的时候 会让文字乱动 影响体验，所以就给注释掉了
 
     }
 

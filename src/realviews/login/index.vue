@@ -35,21 +35,25 @@ import useUserStore from "@/store/modules/user"
 import router from "@/router/index"
 import { ElNotification } from 'element-plus'
 import { getTime } from '@/utils/time';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 const useStore = useUserStore()
 // 定义变量来控制按钮的loading效果
 const loadButton = ref(false)
-const loginForm = reactive({ username: '', password: '' })
+const loginForm = reactive({ username: 'admin', password: 'atguigu123' })
 const submitForm = async () => {
     // let result = loginReview.value.validate()
     // console.log(result)
     // 表单校验
     await loginReview.value.validate()
-
     // 开始转 (这个还能起到 网速慢的情况下 防止用户疯狂点击 转圈结束才能再点一次)
     loadButton.value = true
     try {
         await useStore.userLogin(loginForm);
-        router.push("/home")
+        // 做那个多此一举的功能
+        let redirect: any = route.query.redirect;
+        router.push({ path: redirect || '/' })
+
         ElNotification({
             type: "success",
             message: "欢迎回来",
@@ -68,6 +72,8 @@ const submitForm = async () => {
         })
 
     }
+
+
 }
 
 // 表单的rules
