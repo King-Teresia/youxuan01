@@ -41,7 +41,7 @@ const getC1 = () => {
     categoryStore.getC1();
 }
 
-//此方法即为一级分类下拉菜单的change事件(选中值的时候会触发,保证一级分类ID有了)
+//此方法即为一级分类下拉菜单的change事件(选中值的时候会触发, 作用是 保证获取到一级分类的ID)
 const handler = () => {
     //需要将二级、三级分类的数据清空
     categoryStore.c2Id = '';
