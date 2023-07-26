@@ -5,8 +5,7 @@
         </el-form-item>
         <el-form-item label="SPU品牌">
             <el-select v-model="SpuParams.tmId">
-                <el-option v-for="(item, index) in  AllTradeMark" :key="item.id" :label="item.tmName"
-                    :value="item.id"></el-option>
+                <el-option v-for="(item) in  AllTradeMark" :key="item.id" :label="item.tmName" :value="item.id"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="SPU描述">
@@ -31,7 +30,7 @@
             <!-- 展示销售属性的下拉菜单 -->
             <el-select v-model="saleAttrIdAndValueName"
                 :placeholder="unSelectSaleAttr.length ? `还未选择${unSelectSaleAttr.length}个` : '无'">
-                <el-option :value="`${item.id}:${item.name}`" v-for="(item, index) in unSelectSaleAttr" :key="item.id"
+                <el-option :value="`${item.id}:${item.name}`" v-for="(item) in unSelectSaleAttr" :key="item.id"
                     :label="item.name"></el-option>
             </el-select>
             <el-button @click="addSaleAttr" :disabled="saleAttrIdAndValueName ? false : true" style="margin-left:10px"
@@ -42,7 +41,7 @@
                 <el-table-column label="销售属性名字" width="120px" prop="saleAttrName"></el-table-column>
                 <el-table-column label="销售属性值">
                     <!-- row:即为当前SPU已有的销售属性对象 -->
-                    <template #="{ row, $index }">
+                    <template #="{ row }">
                         <el-tag style="margin:0px 5px" @close="row.spuSaleAttrValueList.splice(index, 1)"
                             v-for="(item, index) in row.spuSaleAttrValueList" :key="row.id" class="mx-1" closable>
                             {{ item.saleAttrValueName }}
@@ -53,7 +52,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120px">
-                    <template #="{ row, $index }">
+                    <template #="{ $index }">
                         <el-button type="primary" size="small" icon="Delete"
                             @click="saleAttr.splice($index, 1)"></el-button>
                     </template>
@@ -72,7 +71,8 @@
 import type { SpuData } from '@/views/product/spu/type'
 import { ref, computed } from 'vue';
 import { reqAllTradeMark, reqSpuImageList, reqSpuHasSaleAttr, reqAllSaleAttr, reqAddOrUpdateSpu } from '@/views/product/spu'
-import type { SaleAttrValue, HasSaleAttr, SaleAttr, SpuImg, Trademark, AllTradeMark, SpuHasImg, SaleAttrResponseData, HasSaleAttrResponseData } from '@/api/product/spu/type';
+import type { SaleAttrValue, HasSaleAttr, SaleAttr, SpuImg, Trademark, AllTradeMark, SpuHasImg, SaleAttrResponseData, HasSaleAttrResponseData } from '@/views/product/spu/type';
+// @ts-ignore
 import { ElMessage } from 'element-plus';
 let $emit = defineEmits(['changeScene']);
 //点击取消按钮:通知父组件切换场景为1,展示有的SPU的数据
@@ -103,7 +103,7 @@ let SpuParams = ref<SpuData>({
 //将来收集还未选择的销售属性的ID与属性值的名字
 let saleAttrIdAndValueName = ref<string>('')
 //子组件书写一个方法
-const initHasSpuData = async (spu: SpuData) => {
+const initHasSpuData = async (spu: SpuData) => {//其实这个参数spu应该是row
     //存储已有的SPU对象,将来在模板中展示
     SpuParams.value = spu;
     //spu:即为父组件传递过来的已有的SPU对象[不完整]
@@ -118,7 +118,8 @@ const initHasSpuData = async (spu: SpuData) => {
     //存储全部品牌的数据
     AllTradeMark.value = result.data;
     //SPU对应商品图片
-    imgList.value = result1.data.map(item => {
+    // @ts-ignore
+    imgList.value = result1.data.map((item: { imgName: any; imgUrl: any; }) => {
         return {
             name: item.imgName,
             url: item.imgUrl
@@ -130,7 +131,7 @@ const initHasSpuData = async (spu: SpuData) => {
     allSaleAttr.value = result3.data;
 }
 //照片墙点击预览按钮的时候触发的钩子
-const handlePictureCardPreview = (file: any) => {
+const handlePictureCardPreview = (file: any) => {//点击这个组件上的放大镜后 会自动把图片的地址注入进来 我们拿 file去接受他
     dialogImageUrl.value = file.url;
     //对话框弹出来
     dialogVisible.value = true;
@@ -139,7 +140,7 @@ const handlePictureCardPreview = (file: any) => {
 const handleRemove = () => {
     console.log(123);
 }
-//照片钱上传成功之前的钩子约束文件的大小与类型
+//照片钱上传成功之前的钩子 可以干什么呢 可以约束文件的大小与类型
 const handlerUpload = (file: any) => {
     if (file.type == 'image/png' || file.type == 'image/jpeg' || file.type == 'image/gif') {
         if (file.size / 1024 / 1024 < 3) {
@@ -218,8 +219,8 @@ const toLook = (row: SaleAttr) => {
         return;
     }
     //判断属性值是否在数组当中存在
-    let repeat = row.spuSaleAttrValueList.find(item => {
-        return item.saleAttrValueName == saleAttrValue;
+    let repeat = row.spuSaleAttrValueList.find((item: { saleAttrValueName: any; }) => {
+        return item.saleAttrValueName == saleAttrValue;//销售属性值的名字 有没有等于 新追加的属性值名字
     })
 
     if (repeat) {

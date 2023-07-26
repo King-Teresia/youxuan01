@@ -8,6 +8,7 @@ import pagenation from "@/components/pageination/index.vue"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 // 将category注册为全局组件
+// @ts-ignore
 import category from "./Category/index.vue"
 
 
@@ -20,6 +21,7 @@ export default {
 
         // 左侧边栏要用的icon 也注册为全局组件对应第7行
         for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+            //@ts-ignore 
             app.component(key, component)
         }
 

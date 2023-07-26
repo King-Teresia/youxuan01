@@ -2,7 +2,8 @@
     <div>
         <el-card class="box-card">
             <!-- 卡片顶部添加品牌按钮 -->
-            <el-button type="primary" size="default" icon="Plus" @click="addTrademark">添加品牌</el-button>
+            <el-button type="primary" size="default" icon="Plus" @click="addTrademark"
+                v-has="`btn.Trademark.add`">添加品牌</el-button>
             <!-- 表格组件：用于展示已有得平台数据 -->
             <!-- table:---border:可以设置表格纵向是否有边框
                 table-column:---label:某一个列表 ---width:设置这列宽度 ---align:设置这一列对齐方式    
@@ -13,12 +14,14 @@
                 <el-table-column label="品牌名称" prop="tmName">
                 </el-table-column>
                 <el-table-column label="品牌LOGO">
-                    <template #="{ row, column, $index }">
+
+                    <!-- 其实下面原本是这样的 <template #="{ row, column, $index }">  但是打包的时候报错 所以要把 没用到的删掉 记得原本是这样的-->
+                    <template #="{ row }">
                         <img :src="row.logoUrl" style="width:100px;height: 100px;">
                     </template>
                 </el-table-column>
                 <el-table-column label="品牌操作">
-                    <template #="{ row, column, $index }">
+                    <template #="{ row }">
                         <el-button type="primary" size="small" icon="Edit" @click="updateTrademark(row)"></el-button>
                         <el-popconfirm :title="`您确定要删除${row.tmName}?`" width="250px" icon="Delete"
                             @confirm='removeTradeMark(row.id)'>
@@ -76,12 +79,16 @@
 </template>
 
 <script setup lang="ts">
+// @ts-ignore
 import { ElMessage, UploadProps } from 'element-plus'
 import { nextTick, onMounted, reactive, ref } from "vue"
 import { reqHasTrademark, reqAddOrUpdateTrademark, reqDeleteTrademark } from '@/views/product/trademark';
+// @ts-ignore
 import type { Records, TradeMarkResponseData, TradeMark } from '@/views/product/trademark/type'
-import { resultProps } from 'element-plus/es/components/index.js';
-
+// 按钮权限的实现
+import useUser from "@/store/modules/user"
+// @ts-ignore
+let userStore = useUser()
 
 //当前页码
 let pageNo = ref<number>(1);
@@ -205,6 +212,7 @@ const confirm = async () => {
 }
 
 //钩子是在图片上传成功之前触发  来约束文件类型与大小
+// @ts-ignore
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     // rawFile这个上传的文件是什么文件类型都可以上传，所以咱们来做个限制
     //要求:上传文件格式png|jpg|gif 4M
@@ -228,6 +236,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 }
 
 // 图片上传成功
+// @ts-ignore
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
     //response:即为当前这次上传图片post请求服务器返回的数据
     //收集上传图片的地址, 将来新添加一个新的品牌的时候 带给服务器
@@ -259,6 +268,7 @@ const removeTradeMark = async (id: number) => {
 }
 
 //自定义校验规则方法
+// @ts-ignore
 const validatorTmName = (rule: any, value: any, callBack: any) => {
     //是当表单元素触发blur时候,会触发此方法
     //自定义校验规则
@@ -275,6 +285,7 @@ const validatorTmName = (rule: any, value: any, callBack: any) => {
 }
 
 // 自定义图片规则
+// @ts-ignore
 const validatorLogoUrl = (rule: any, value: any, callBack: any) => {
     //如果图片上传
     if (value) {

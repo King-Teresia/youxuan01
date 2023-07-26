@@ -28,6 +28,8 @@ const useCategoryStore = defineStore('Category', {
       if (result.code == 200) {
         this.c1Arr = result.data
       }
+      console.log(result.data);
+
     },
     //获取二级分类的数据
     async getC2() {

@@ -37,6 +37,14 @@ import "element-plus/theme-chalk/el-message.css";
 // 引入 路由鉴权
 import "./permission.ts";
 
+// 暗黑主题样式
+import 'element-plus/theme-chalk/dark/css-vars.css'
+
+//引入自定义指令文件
+import { isHasButton } from '@/directive/has'
+isHasButton(app)
+
+
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus, {

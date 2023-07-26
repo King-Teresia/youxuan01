@@ -1,6 +1,8 @@
 // 在这里详细的配置 路由的路径
 
-const routesDetail = [
+
+//对外暴露配置路由(常量路由):全部用户都可以访问到的路由
+export const constantRoute = [
     {
         path: '/login',
         name: 'login',//name的意义是 到时候 用来做路由权限用的 
@@ -11,15 +13,6 @@ const routesDetail = [
             icon: 'SwitchButton'
         }
     },
-    // {
-    //     path: '/home',
-    //     name: 'home',
-    //     component: () => import('@/realviews/home/index.vue')
-    // },
-    // {
-    //     path: "/",
-    //     redirect: "/home"
-    // },
     {
         path: "/404",
         name: "404",
@@ -30,17 +23,7 @@ const routesDetail = [
             icon: 'Histogram'
         }
     },
-    {
-        path: "/:pathMatch(.*)*", //未匹配到上面这仨的 (任意其他路径)都会走这里
-        name: "any",
-        redirect: "/404",
-        meta: {
-            title: "任意路由",
-            hidden: true,//隐藏设置
-            icon: 'Comment'
-        }
 
-    },
     // 这块我感觉视频里的老师 是想做 之前类似于node项目里的 mainbox (还真是)
     {
         path: '/',
@@ -64,8 +47,6 @@ const routesDetail = [
                     title: "首页",
                     hidden: false,//隐藏设置
                     icon: 'HomeFilled'
-
-
                 }
             },
             // {
@@ -100,16 +81,27 @@ const routesDetail = [
     },
     {
         path: "/screen",
-        name: "screen",
+        name: "Screen",
         component: () => import('@/realviews/screen/index.vue'),
         meta: {
             title: "数据大屏",
             hidden: false,//隐藏设置 ！！！！！！！！！！！！！！！！！其实这个hidden：false不用写也没事，因为你不写 他就是undefined 也就是false
             icon: 'ZoomOut'
         }
-    }, {
+    },
+]
+
+
+
+
+
+
+
+//异步路由
+export const asnycRoute = [
+    {
         path: "/acl",
-        name: "acl",
+        name: "Acl",
         component: () => import('@/layout/index.vue'),
         redirect: "/acl/user",
         meta: {
@@ -119,7 +111,7 @@ const routesDetail = [
         children: [
             {
                 path: "/acl/user",
-                name: "userAcl",
+                name: "User",
                 component: () => import('@/realviews/acl/user/index.vue'),
                 meta: {
                     title: "用户管理",
@@ -130,7 +122,7 @@ const routesDetail = [
                 }
             }, {
                 path: "/acl/role",
-                name: "role",
+                name: "Role",
                 component: () => import('@/realviews/acl/role/index.vue'),
                 meta: {
                     title: "角色管理",
@@ -141,7 +133,7 @@ const routesDetail = [
                 }
             }, {
                 path: "/acl/permission",
-                name: "permission",
+                name: "Permission",
                 component: () => import('@/realviews/acl/permission/index.vue'),
                 meta: {
                     title: "菜单管理",
@@ -155,7 +147,7 @@ const routesDetail = [
     },
     {
         path: "/product",
-        name: "product",
+        name: "Product",
         component: () => import('@/layout/index.vue'),
         redirect: "/product/trademark",
         meta: {
@@ -165,7 +157,7 @@ const routesDetail = [
         children: [
             {
                 path: "/product/trademark",
-                name: "trademark",
+                name: "Trademark",
                 component: () => import('@/realviews/product/trademark/index.vue'),
                 meta: {
                     title: "品牌管理",
@@ -173,7 +165,7 @@ const routesDetail = [
                 }
             }, {
                 path: "/product/attr",
-                name: "attr",
+                name: "Attr",
                 component: () => import('@/realviews/product/attr/index.vue'),
                 meta: {
                     title: "属性管理",
@@ -181,7 +173,7 @@ const routesDetail = [
                 }
             }, {
                 path: "/product/sku",
-                name: "sku",
+                name: "Sku",
                 component: () => import('@/realviews/product/sku/index.vue'),
                 meta: {
                     title: "SKU管理",
@@ -189,7 +181,7 @@ const routesDetail = [
                 }
             }, {
                 path: "/product/spu",
-                name: "spu",
+                name: "Spu",
                 component: () => import('@/realviews/product/spu/index.vue'),
                 meta: {
                     title: "SPU管理",
@@ -198,7 +190,25 @@ const routesDetail = [
             },
         ]
     }
+
 ]
 
 
-export default routesDetail
+
+
+
+
+
+// 任意路由
+export const anyRoute = {
+    path: "/:pathMatch(.*)*", //未匹配到上面这仨的 (任意其他路径)都会走这里
+    name: "Any",
+    redirect: "/404",
+    meta: {
+        title: "任意路由",
+        hidden: true,//隐藏设置
+        icon: 'DataLine'
+    }
+
+}
+

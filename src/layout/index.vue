@@ -36,7 +36,6 @@ import mainShow from "./main/index.vue"
 import headerTabbar from "./tabbar/index.vue"
 import { useRoute } from "vue-router"
 import useLayOutSettingStore from "@/store/modules/layout.config"
-import { onMounted } from "vue"
 let useLayOutStore = useLayOutSettingStore();
 const userStore = useUserStore()
 const route = useRoute()

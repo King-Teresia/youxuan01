@@ -5,14 +5,14 @@
             <el-table-column label="名称" show-overflow-tooltip width="150px" prop="skuName"></el-table-column>
             <el-table-column label="描述" show-overflow-tooltip width="150px" prop="skuDesc"></el-table-column>
             <el-table-column label="图片" width="150px">
-                <template #="{ row, $index }">
+                <template #="{ row }">
                     <img :src="row.skuDefaultImg" alt="" style="width: 100px;height: 100px;">
                 </template>
             </el-table-column>
             <el-table-column label="重量" width="150px" prop="weight"></el-table-column>
             <el-table-column label="价格" width="150px" prop="price"></el-table-column>
             <el-table-column label="操作" width="250px" fixed="right">
-                <template #="{ row, $index }">
+                <template #="{ row }">
                     <el-button type="primary" size="small" :icon="row.isSale == 1 ? 'Bottom' : 'Top'"
                         @click="updateSale(row)"></el-button>
                     <el-button type="primary" size="small" icon="Edit" @click="updateSku"></el-button>
@@ -35,33 +35,33 @@
                 <h4>查看商品的详情</h4>
             </template>
             <template #default>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">名称</el-col>
                     <el-col :span="18">{{ skuInfo.skuName }}</el-col>
                 </el-row>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">描述</el-col>
                     <el-col :span="18">{{ skuInfo.skuDesc }}</el-col>
                 </el-row>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">价格</el-col>
                     <el-col :span="18">{{ skuInfo.price }}</el-col>
                 </el-row>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">平台属性</el-col>
                     <el-col :span="18">
                         <el-tag style="margin:5px;" v-for="item in skuInfo.skuAttrValueList" :key="item.id">{{
                             item.valueName }}</el-tag>
                     </el-col>
                 </el-row>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">销售属性</el-col>
                     <el-col :span="18">
                         <el-tag style="margin:5px;" v-for="item in skuInfo.skuSaleAttrValueList" :key="item.id">{{
                             item.saleAttrValueName }}</el-tag>
                     </el-col>
                 </el-row>
-                <el-row style="margin:10px 0px;">
+                <el-row>
                     <el-col :span="6">商品图片</el-col>
                     <el-col :span="18">
                         <el-carousel :interval="4000" type="card" height="200px">
@@ -82,6 +82,7 @@ import { ref, onMounted } from 'vue';
 import { reqSkuList, reqSaleSku, reqCancelSale, reqSkuInfo, reqRemoveSku } from '@/views/product/sku'
 //引入ts类型
 import type { SkuResponseData, SkuData, SkuInfoData } from '@/views/product/sku/type';
+// @ts-ignore
 import { ElMessage } from 'element-plus';
 //分页器当前页码
 let pageNo = ref<number>(1);
@@ -105,7 +106,8 @@ const getHasSku = async (pager = 1) => {
         skuArr.value = result.data.records;
     }
 }
-//分页器下拉菜单发生变化触发
+//分页器下拉菜单发生变化触发 会自动传入 当前页码
+// @ts-ignore
 const handler = (pageSizes: number) => {
     getHasSku();
 }
@@ -160,7 +162,7 @@ const removeSku = async (id: number) => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .el-carousel__item h3 {
     color: #475669;
     opacity: 0.75;
@@ -175,5 +177,12 @@ const removeSku = async (id: number) => {
 
 .el-carousel__item:nth-child(2n + 1) {
     background-color: #d3dce6;
+}
+
+.el-drawer {
+    .el-row {
+        margin: 10px 0px;
+
+    }
 }
 </style>

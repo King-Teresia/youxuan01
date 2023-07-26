@@ -33,6 +33,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { reactive, ref } from 'vue';
 import useUserStore from "@/store/modules/user"
 import router from "@/router/index"
+// @ts-ignore
 import { ElNotification } from 'element-plus'
 import { getTime } from '@/utils/time';
 import { useRoute } from 'vue-router';
@@ -73,6 +74,8 @@ const submitForm = async () => {
 
     }
 
+    // 刷新
+    window.location.reload();
 
 }
 
